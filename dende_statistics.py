@@ -20,107 +20,82 @@ class Statistics:
         """
         self.dataset = dataset
 
-    def mean(self, column):
-        """
-        Calcula a média aritmética de uma coluna.
+def calcular_media(lista):
+    if not lista:
+        return 0
+    return sum(lista) / len(lista)
 
-        Parâmetros
-        ----------
-        column : str
-            O nome da coluna (chave do dicionário do dataset).
+def calcular_mediana(lista):
+    if not lista:
+        return 0
+    sorted_lista = sorted(lista)
+    n = len(sorted_lista)
+    mid = n // 2
+    if n % 2 == 0:
+        return (sorted_lista[mid - 1] + sorted_lista[mid]) / 2
+    else:
+        return sorted_lista[mid]
 
-        Retorno
-        -------
-        float
-            A média dos valores na coluna.
-        """
-        pass
+def calcular_moda(lista):
+    if not lista:
+        return None
+    from collections import Counter
+    counter = Counter(lista)
+    moda = counter.most_common(1)[0][0]
+    return moda
 
-    def median(self, column):
-        """
-        Calcula a mediana de uma coluna.
+def calcular_variancia(lista):
+    if not lista:
+        return 0
+    media = calcular_media(lista)
+    variancia = sum((x - media) ** 2 for x in lista) / len(lista)
+    return variancia
 
-        A mediana é o valor central de um conjunto de dados ordenado.
+def calcular_desvio_padrao(lista):
+    variancia = calcular_variancia(lista)
+    return variancia ** 0.5
 
-        Parâmetros
-        ----------
-        column : str
-            O nome da coluna (chave do dicionário do dataset).
+def calcular_percentil(lista, percentil):
+    if not lista:
+        return 0
+    sorted_lista = sorted(lista)
+    k = (len(sorted_lista) - 1) * (percentil / 100)
+    f = int(k)
+    c = k - f
+    if f + 1 < len(sorted_lista):
+        return sorted_lista[f] + c * (sorted_lista[f + 1] - sorted_lista[f])
+    else:
+        return sorted_lista[f]
 
-        Retorno
-        -------
-        float
-            O valor da mediana da coluna.
-        """
-        pass
+def calcular_quartis(lista):
+    if not lista or len(lista) < 4:
+        return None
+    sorted_lista = sorted(lista)
+    n = len(sorted_lista)
 
-    def mode(self, column):
-        """
-        Encontra a moda (ou modas) de uma coluna.
+    q1 = calcular_percentil(sorted_lista, 25)
 
-        A moda é o valor que aparece com mais frequência no conjunto de dados.
+    q2 = calcular_percentil(sorted_lista, 50)
+ 
+    q3 = calcular_percentil(sorted_lista, 75)
+    
+    return {
+        'Q1': q1,
+        'Q2': q2,
+        'Q3': q3,
+        'IQR': q3 - q1
+    }
 
-        Parâmetros
-        ----------
-        column : str
-            O nome da coluna (chave do dicionário do dataset).
-
-        Retorno
-        -------
-        list
-            Uma lista contendo o(s) valor(es) da moda.
-        """
-        pass
-
-    def variance(self, column):
-        """
-        Calcula a variância populacional de uma coluna.
-
-        Parâmetros
-        ----------
-        column : str
-            O nome da coluna (chave do dicionário do dataset).
-
-        Retorno
-        -------
-        float
-            A variância dos valores na coluna.
-        """
-        pass
-
-    def stdev(self, column):
-        """
-        Calcula o desvio padrão populacional de uma coluna.
-
-        Parâmetros
-        ----------
-        column : str
-            O nome da coluna (chave do dicionário do dataset).
-
-        Retorno
-        -------
-        float
-            O desvio padrão dos valores na coluna.
-        """
-        pass
-
-    def covariance(self, column_a, column_b):
-        """
-        Calcula a covariância entre duas colunas.
-
-        Parâmetros
-        ----------
-        column_a : str
-            O nome da primeira coluna (X).
-        column_b : str
-            O nome da segunda coluna (Y).
-
-        Retorno
-        -------
-        float
-            O valor da covariância entre as duas colunas.
-        """
-        pass
+def calcular_covariancia(lista_x, lista_y):
+    if not lista_x or not lista_y or len(lista_x) != len(lista_y):
+        return 0
+    
+    media_x = calcular_media(lista_x)
+    media_y = calcular_media(lista_y)
+    
+    covariancia = sum((lista_x[i] - media_x) * (lista_y[i] - media_y) for i in range(len(lista_x))) / len(lista_x)
+    
+    return covariancia
 
     def itemset(self, column):
         """
