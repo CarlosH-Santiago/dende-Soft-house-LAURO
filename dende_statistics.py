@@ -18,8 +18,50 @@ class Statistics:
             O conjunto de dados, onde as chaves representam os nomes das
             colunas e os valores são as listas de dados correspondentes.
         """
+        # 1. Validação: É um dicionário?
+        if not isinstance(dataset, dict): 
+            raise ValueError("O dataset deve ser um dicionário (mapa)")
+        
+        # 2. Validação: Todas as listas têm o mesmo tamanho?
+        # Pega o tamanho da primeira lista para comparar com as outras
+        lengths = [len(v) for v in dataset.values() if isinstance(v, list)]
+        if len(set(lengths)) > 1 :
+            raise ValueError("Todas as colunas devem possuir o mesmo tamanho.")
+        
+        # 3. Validação: Dados de uma coluna são do mesmo tipo?
+        for column_name, values in dataset.items():
+            if not isinstance(values, list) :
+                raise ValueError(f"O valor da chave '{column_name}' deve ser uma lista.")
+            
+            if len(values) > 0 :
+                first_type = type(values[0])
+                if not all(isinstance(item, first_type) for item in values):
+                    raise ValueError(f"A coluna '{column_name}' pussui tipos de dados mistos.")
+        
         self.dataset = dataset
-
+        
+        
+    def _is_numeric(self, column):
+        """
+        Verifica se uma coluna possui dados numéricos (int ou float).
+        Método auxiliar para validação antes de cálculos matemáticos.
+        """
+        # 1. Verifica se a coluna existe no dataset
+        if column not in self.dataset: 
+            raise KeyError(f"A coluna '{column}' não existe no dataset")
+        
+        # 2. Pega a lista de dados
+        values = self.dataset[column]
+        
+        # 3. Se a lista estiver vazia, não é numérica (ou não importa)
+        if not values:
+            raise False
+        
+        # 4. Verifica o tipo do primeiro elemento
+        # (Como o __init__ já garantiu que todos são iguais, basta olhar o primeiro)
+        return isinstance(values[0], (int, float))
+        
+        
     def mean(self, column):
         """
         Calcula a média aritmética de uma coluna.
