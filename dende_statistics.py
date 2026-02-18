@@ -18,7 +18,153 @@ class Statistics:
             O conjunto de dados, onde as chaves representam os nomes das
             colunas e os valores são as listas de dados correspondentes.
         """
+        # 1. Validação: É um dicionário?
+        if not isinstance(dataset, dict): 
+            raise ValueError("O dataset deve ser um dicionário (mapa)")
+        
+        # 2. Validação: Todas as listas têm o mesmo tamanho?
+        # Pega o tamanho da primeira lista para comparar com as outras
+        lengths = [len(v) for v in dataset.values() if isinstance(v, list)]
+        if len(set(lengths)) > 1 :
+            raise ValueError("Todas as colunas devem possuir o mesmo tamanho.")
+        
+        # 3. Validação: Dados de uma coluna são do mesmo tipo?
+        for column_name, values in dataset.items():
+            if not isinstance(values, list) :
+                raise ValueError(f"O valor da chave '{column_name}' deve ser uma lista.")
+            
+            if len(values) > 0 :
+                first_type = type(values[0])
+                if not all(isinstance(item, first_type) for item in values):
+                    raise ValueError(f"A coluna '{column_name}' pussui tipos de dados mistos.")
+        
         self.dataset = dataset
+<<<<<<< main
+        
+        
+    def _is_numeric(self, column):
+        """
+        Verifica se uma coluna possui dados numéricos (int ou float).
+        Método auxiliar para validação antes de cálculos matemáticos.
+        """
+        # 1. Verifica se a coluna existe no dataset
+        if column not in self.dataset: 
+            raise KeyError(f"A coluna '{column}' não existe no dataset")
+        
+        # 2. Pega a lista de dados
+        values = self.dataset[column]
+        
+        # 3. Se a lista estiver vazia, não é numérica (ou não importa)
+        if not values:
+            raise False
+        
+        # 4. Verifica o tipo do primeiro elemento
+        # (Como o __init__ já garantiu que todos são iguais, basta olhar o primeiro)
+        return isinstance(values[0], (int, float))
+        
+        
+    def mean(self, column):
+        """
+        Calcula a média aritmética de uma coluna.
+
+        Parâmetros
+        ----------
+        column : str
+            O nome da coluna (chave do dicionário do dataset).
+
+        Retorno
+        -------
+        float
+            A média dos valores na coluna.
+        """
+        pass
+
+    def median(self, column):
+        """
+        Calcula a mediana de uma coluna.
+
+        A mediana é o valor central de um conjunto de dados ordenado.
+
+        Parâmetros
+        ----------
+        column : str
+            O nome da coluna (chave do dicionário do dataset).
+
+        Retorno
+        -------
+        float
+            O valor da mediana da coluna.
+        """
+        pass
+
+    def mode(self, column):
+        """
+        Encontra a moda (ou modas) de uma coluna.
+
+        A moda é o valor que aparece com mais frequência no conjunto de dados.
+
+        Parâmetros
+        ----------
+        column : str
+            O nome da coluna (chave do dicionário do dataset).
+
+        Retorno
+        -------
+        list
+            Uma lista contendo o(s) valor(es) da moda.
+        """
+        pass
+
+    def variance(self, column):
+        """
+        Calcula a variância populacional de uma coluna.
+
+        Parâmetros
+        ----------
+        column : str
+            O nome da coluna (chave do dicionário do dataset).
+
+        Retorno
+        -------
+        float
+            A variância dos valores na coluna.
+        """
+        pass
+
+    def stdev(self, column):
+        """
+        Calcula o desvio padrão populacional de uma coluna.
+
+        Parâmetros
+        ----------
+        column : str
+            O nome da coluna (chave do dicionário do dataset).
+
+        Retorno
+        -------
+        float
+            O desvio padrão dos valores na coluna.
+        """
+        pass
+
+    def covariance(self, column_a, column_b):
+        """
+        Calcula a covariância entre duas colunas.
+
+        Parâmetros
+        ----------
+        column_a : str
+            O nome da primeira coluna (X).
+        column_b : str
+            O nome da segunda coluna (Y).
+
+        Retorno
+        -------
+        float
+            O valor da covariância entre as duas colunas.
+        """
+        pass
+=======
 
 def calcular_media(lista):
     if not lista:
@@ -96,6 +242,7 @@ def calcular_covariancia(lista_x, lista_y):
     covariancia = sum((lista_x[i] - media_x) * (lista_y[i] - media_y) for i in range(len(lista_x))) / len(lista_x)
     
     return covariancia
+>>>>>>> estatistica_descritiva-JOAO_GUILHERME
 
     def itemset(self, column):
         """
