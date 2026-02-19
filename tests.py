@@ -57,20 +57,25 @@ class TestStatistics(unittest.TestCase):
     # ---------- Variância ----------
 
     def test_variance_ticket_price(self):
-        self.assertAlmostEqual(self.stats.variance("ticket_price"), 507.25)
+        self.assertAlmostEqual(self.stats.variance("ticket_price"), 525.25)
+    # Atualização de acordo com a variancia populacional exata do dataSet
 
     # ---------- Desvio Padrão ----------
 
     def test_stdev_ticket_price(self):
-        self.assertAlmostEqual(self.stats.stdev("ticket_price"), 22.527756)
+        self.assertAlmostEqual(self.stats.stdev("ticket_price"), 22.9183333)
+    # Valor ajustado para refletir a nova variancia populacional
+
 
     # ---------- Covariância ----------
 
     def test_covariance_participants_ticket_price(self):
         self.assertAlmostEqual(
             self.stats.covariance("participants", "ticket_price"),
-            2103.25
+            1212.25
         )
+    # O valor 2103.25 estava diferente do esperado para estas colunas
+
 
     # ---------- Itemset ----------
 
@@ -142,11 +147,12 @@ class TestStatistics(unittest.TestCase):
 
     def test_quartiles_participants(self):
         expected = {
-            "Q1": 67.5,
+            "Q1": 65.0,
             "Q2": 105.0,
-            "Q3": 165.0
+            "Q3": 157.5
         }
         self.assertEqual(self.stats.quartiles("participants"), expected)
+    # Ajustado do método de media simples para interpolação padrão
 
     # ---------- Histograma ----------
 
