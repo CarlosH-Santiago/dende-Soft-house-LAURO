@@ -34,6 +34,7 @@ class Statistics:
 
     def _is_numeric(self, column):
         """Verifica se uma coluna possui dados numéricos (int ou float). Método auxiliar para validação antes de cálculos matemáticos."""
+        
         # 1. Verifica se a coluna existe no dataset
         if column not in self.dataset: 
             raise KeyError(f"A coluna '{column}' não existe no dataset")
